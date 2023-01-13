@@ -157,7 +157,7 @@ for inputs,masks in train_batches.take(2):
 base_model = keras.applications.MobileNetV2(input_shape=[128,128,3],include_top=False)
 base_model.summary()
 
-# Use these activation layers as the outputs from the feature extractor (some of these outputs will be used to perform concatenation at the upsampling path)
+# Use these activation layers as the outputs from the feature extractor
 layer_names = [
     'block_1_expand_relu',      #64x64
     'block_3_expand_relu',      #32x32
@@ -193,7 +193,7 @@ def unet(output_channels:int):
         concat = keras.layers.Concatenate()
         x = concat([x,skip])
     #Use a transpose convolution layer to perform the last upsampling and as output layer
-    last = keras.layers.Conv2DTranspose(filters=output_channels,kernel_size=3,  strides=2,padding='same') #64x64 --> 128x128
+    last = keras.layers.Conv2DTranspose(filters=output_channels,kernel_size=3,  strides=2,padding='same')
     outputs = last(x)
     model = keras.Model(inputs=inputs,outputs=outputs)
     return model
